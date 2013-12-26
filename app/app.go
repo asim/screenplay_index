@@ -7,7 +7,7 @@ import (
 )
 
 func Logger(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.RemoteAddr, r.RequestURI)
+	log.Println(r.Header.Get("X-Forwarded-For"), r.RemoteAddr, r.Method, r.RequestURI)
 }
 
 func Run(host string) {
