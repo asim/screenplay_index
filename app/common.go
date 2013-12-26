@@ -1,6 +1,7 @@
 package app
 
 import (
+	"crypto/rand"
 	"fmt"
 	"github.com/hoisie/mustache"
 	"github.com/mattbaird/elastigo/search"
@@ -27,14 +28,26 @@ func alert(msg string) map[string]string {
 	}
 }
 
-func exists(url string) bool {
-	id := shorten(url)
+func urlExists(url string) bool {
+	out, err := search.Search("scripts").Type("script").Search("url:" + url).Size("1").Result()
+	if err != nil {
+		return false
+	}
+
+	if out.Hits.Total > 0 {
+		return true
+	}
+
+	return false
+}
+
+func shortExists(id string) bool {
 	out, err := search.Search("scripts").Type("script").Search("short:" + id).Size("1").Result()
 	if err != nil {
 		return false
 	}
 
-	if out.Hits.Len() > 0 {
+	if out.Hits.Total > 0 {
 		return true
 	}
 
@@ -43,10 +56,18 @@ func exists(url string) bool {
 
 func shorten(url string) string {
 	bytes := make([]byte, 10)
-	for i, b := range url {
-		bytes[i%10] = alphanum[byte(b)%byte(len(alphanum))]
+	for {
+		rand.Read(bytes)
+		for i, b := range bytes {
+			bytes[i] = alphanum[b%byte(len(alphanum))]
+		}
+		id := string(bytes)
+		if !shortExists(id) {
+			return id
+		}
 	}
-	return string(bytes)
+
+	return "shortend"
 }
 
 func getPageOffset(vars url.Values, limit int) (int, int) {

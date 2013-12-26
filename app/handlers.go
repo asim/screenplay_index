@@ -31,7 +31,7 @@ func adderHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if exists(uri) {
+	if urlExists(uri) {
 		return
 	}
 
@@ -89,7 +89,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if exists(uri) {
+	if urlExists(uri) {
 		d["alert"] = "Script already exists"
 		render(w, d, "add")
 		return
