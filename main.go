@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/asim/es/app"
+	"github.com/asim/screenplay_index/app"
 )
 
 func main() {
