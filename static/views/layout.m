@@ -1,5 +1,6 @@
 <html>
   <head>
+    <meta name="viewport" content="initial-scale=1">
     <title>Got Scripts?</title>
     <style type="text/css">
       html {
