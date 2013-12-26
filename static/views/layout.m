@@ -6,6 +6,14 @@
         font-family: arial,sans-serif;
 	font-size: small;
       }
+      body {
+	min-width: 320px;
+        max-width: 960px;
+	margin: 0 auto;
+      }
+      button {
+        padding:5px;
+      }
       ul {
         list-style-type: none;
       }
@@ -23,6 +31,11 @@
       }
       .input {
         width: 100%;
+	padding: 5px;
+	font-weight: bold;
+      }
+      .nav {
+        padding-top: 10px;
       }
       .alert {
         width: 100%;
@@ -35,7 +48,7 @@
     </style>
   </head>
   <body>
-    <ul>
+    <ul class="nav">
       <li><a href="/">home</a></li>
       <li><a href="/scripts">scripts</a></li>
       <li><a href="/add">+add</a></li>
