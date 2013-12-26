@@ -72,6 +72,16 @@
         width: 200px;
 	border: 1px solid #222;
       }
+      .search {
+        max-width: 600px;
+      }
+      .search div {
+        overflow: hidden;
+        max-width: 550px;
+      }
+      .search button {
+        float: right;
+      }
     </style>
   </head>
   <body>

@@ -192,8 +192,8 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	q = url.QueryEscape(q)
-	out, err := search.Search("scripts").Type("script").Search(q).From(from).Size(size).Result()
+	qe := url.QueryEscape(q)
+	out, err := search.Search("scripts").Type("script").Search(qe).From(from).Size(size).Result()
 	if err != nil {
 		log.Println("Error:", err)
 		http.Redirect(w, r, r.Referer(), 302)
