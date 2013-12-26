@@ -5,7 +5,9 @@
       {{#info}}
         <h3>Problem while searching {{.}}</h3>
       {{/info}}
+      <ul class="results">
       {{#results}}
-        <div><a href="{{Url}}">{{Title}}</a> <a href="/s/{{Short}}" style="font-size:0.8em">short</a></div>
+        <li>{{> _script.m}}</li>
       {{/results}}
+      </ul>
     </div>

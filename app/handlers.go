@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	itemLimit = 35
-	itemSize  = "35"
+	itemLimit = 20
+	itemSize  = "20"
 )
 
 func adderHandler(w http.ResponseWriter, r *http.Request) {

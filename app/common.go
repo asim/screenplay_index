@@ -23,6 +23,14 @@ type script struct {
 	Title, Url, Short string
 }
 
+func (s script) Domain() string {
+	u, err := url.Parse(s.Url)
+	if err != nil {
+		return ""
+	}
+	return u.Host
+}
+
 func alert(msg string) map[string]string {
 	return map[string]string{
 		"alert": msg,

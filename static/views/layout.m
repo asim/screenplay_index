@@ -46,6 +46,16 @@
       .main {
         padding: 0 40px 0 40px;
       }
+      .results {
+        padding: 0;
+      }
+      .results li {
+        display: block;
+        padding-bottom: 10px;
+      }
+      .domain {
+        color: #006621;
+      }
     </style>
   </head>
   <body>

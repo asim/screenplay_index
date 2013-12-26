@@ -1,6 +1,8 @@
     <div class="main">
       <h1>Scripts</h1>
+      <ul class="results">
       {{#results}}
-       <div><a href="{{Url}}">{{Title}}</a> <a href="/s/{{Short}}" style="font-size:0.8em">short</a></div>
+        <li>{{> _script.m}}</li>
       {{/results}}
+      </ul>
     </div>
