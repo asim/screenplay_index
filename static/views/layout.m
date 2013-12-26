@@ -56,6 +56,11 @@
       .domain {
         color: #006621;
       }
+      .link input {
+	padding: 0;
+        margin: 0;
+        width: 200px;
+      }
     </style>
   </head>
   <body>
@@ -67,5 +72,15 @@
     {{#alert}}<center class="alert">{{alert}}</center>{{/alert}}
     {{{content}}}
     {{> _pager.m}}
+    <script>
+      function shareLink(obj) {
+	href = obj.getAttribute("href");
+	input = obj.parentNode.getElementsByTagName("input")[0];
+	input.style.display = 'inline-block';
+	input.value = location.protocol + '//' + location.hostname + href;
+	input.select();
+	return false;
+      };
+    </script>
   </body>
 </html>
