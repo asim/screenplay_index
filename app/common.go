@@ -2,6 +2,7 @@ package app
 
 import (
 	"crypto/rand"
+	"encoding/json"
 	"fmt"
 	"github.com/hoisie/mustache"
 	"github.com/mattbaird/elastigo/search"
@@ -29,9 +30,18 @@ func alert(msg string) map[string]string {
 }
 
 func urlExists(url string) bool {
-	out, err := search.Search("scripts").Type("script").Search("url:" + url).Size("1").Result()
+	b, err := json.Marshal(url)
 	if err != nil {
-		return false
+		log.Println(err)
+		return true
+	}
+
+	qs := search.NewQueryString("url", string(b))
+	q := search.Query().Qs(&qs)
+	out, err := search.Search("scripts").Type("script").Query(q).Size("1").Result()
+	if err != nil {
+		log.Println(err)
+		return true
 	}
 
 	if out.Hits.Total > 0 {
@@ -44,7 +54,8 @@ func urlExists(url string) bool {
 func shortExists(id string) bool {
 	out, err := search.Search("scripts").Type("script").Search("short:" + id).Size("1").Result()
 	if err != nil {
-		return false
+		log.Println(err)
+		return true
 	}
 
 	if out.Hits.Total > 0 {

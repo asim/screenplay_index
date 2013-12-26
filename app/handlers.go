@@ -31,7 +31,8 @@ func adderHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if urlExists(uri) {
+	if t := urlExists(uri); t {
+		log.Println("Exists", uri, t)
 		return
 	}
 
@@ -46,7 +47,7 @@ func adderHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("error indexing:", err)
 	} else {
-		log.Println("indexed item (id, type):", rsp.Id, rsp.Type)
+		log.Println("indexed item %v response (id, type):", s, rsp.Id, rsp.Type)
 	}
 
 	return
@@ -89,7 +90,8 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if urlExists(uri) {
+	if t := urlExists(uri); t {
+		log.Println("Exists", uri, t)
 		d["alert"] = "Script already exists"
 		render(w, d, "add")
 		return
@@ -112,7 +114,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("error indexing:", err)
 	} else {
-		log.Println("indexed item (id, type):", rsp.Id, rsp.Type)
+		log.Println("indexed item %v response (id, type):", s, rsp.Id, rsp.Type)
 	}
 
 	render(w, alert("Successfully added script"), "index")

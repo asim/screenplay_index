@@ -14,7 +14,7 @@ func Run(host string) {
 	http.Handle("/static", http.StripPrefix("/static", http.FileServer(http.Dir("static/html"))))
 	http.Handle("/captcha/", captcha.Server(200, 100))
 	http.HandleFunc("/add", addHandler)
-	//http.HandleFunc("/adder", adderHandler)
+	http.HandleFunc("/_add", adderHandler)
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/scripts", scriptsHandler)
 	http.HandleFunc("/search", searchHandler)
