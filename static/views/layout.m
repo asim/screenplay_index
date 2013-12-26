@@ -6,6 +6,7 @@
       html {
         font-family: arial,sans-serif;
 	font-size: small;
+        color: #404040;
       }
       body {
 	min-width: 320px;
@@ -13,6 +14,8 @@
 	margin: 0 auto;
       }
       button {
+	background: #f1f1f1;
+	border: 1px solid #dcdcdc;
         padding:5px;
       }
       ul {
@@ -34,9 +37,16 @@
         width: 100%;
 	padding: 5px;
 	font-weight: bold;
+	border: 1px solid #4285f4;
       }
       .nav {
         padding-top: 10px;
+      }
+      .nav a {
+        text-decoration: none;
+      }
+      .nav a:hover {
+        text-decoration: underline;
       }
       .alert {
         width: 100%;
@@ -60,6 +70,7 @@
 	padding: 0;
         margin: 0;
         width: 200px;
+	border: 1px solid #222;
       }
     </style>
   </head>
