@@ -90,12 +90,14 @@
         display: inline-block;
         text-indent:-9999px;
         width: 16px;
+        overflow: hidden;
       }
       .home-ico a {
         background: url('/static/image/h.png') no-repeat;
         display: inline-block;
         text-indent:-9999px;
         width: 16px;
+        overflow: hidden;
       }
       .search-ico a:hover {
         background: url('/static/image/sh.png') no-repeat;
