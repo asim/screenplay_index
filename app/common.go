@@ -5,12 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hoisie/mustache"
+	"github.com/mattbaird/elastigo/core"
 	"github.com/mattbaird/elastigo/search"
 	"log"
 	"net/http"
 	"net/url"
 	"path/filepath"
 	"strconv"
+	"time"
 )
 
 var (
@@ -29,6 +31,24 @@ func (s script) Domain() string {
 		return ""
 	}
 	return u.Host
+}
+
+func addScript(title, uri string) error {
+	s := map[string]interface{}{
+		"id":    time.Now().Unix(),
+		"title": title,
+		"url":   uri,
+		"short": shorten(uri),
+	}
+
+	rsp, err := core.Index(true, "scripts", "script", "", s)
+	if err != nil {
+		log.Println("error indexing:", err)
+		return err
+	}
+
+	log.Println("indexed item %v response (id, type):", s, rsp.Id, rsp.Type)
+	return nil
 }
 
 func alert(msg string) map[string]string {

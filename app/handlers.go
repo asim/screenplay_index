@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/dchest/captcha"
-	"github.com/mattbaird/elastigo/core"
 	"github.com/mattbaird/elastigo/search"
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -36,20 +36,7 @@ func adderHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	s := map[string]interface{}{
-		"id":    time.Now().Unix(),
-		"title": title,
-		"url":   uri,
-		"short": shorten(uri),
-	}
-
-	rsp, err := core.Index(true, "scripts", "script", "", s)
-	if err != nil {
-		log.Println("error indexing:", err)
-	} else {
-		log.Println("indexed item %v response (id, type):", s, rsp.Id, rsp.Type)
-	}
-
+	addScript(title, uri)
 	return
 }
 
@@ -103,21 +90,20 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	s := map[string]interface{}{
-		"id":    time.Now().Unix(),
-		"title": title,
-		"url":   uri,
-		"short": shorten(uri),
+	s := script{
+		Id:    time.Now().Unix(),
+		Title: title,
+		Url:   uri,
+		Short: shorten(uri),
 	}
 
-	rsp, err := core.Index(true, "scripts", "script", "", s)
-	if err != nil {
-		log.Println("error indexing:", err)
-	} else {
-		log.Println("indexed item %v response (id, type):", s, rsp.Id, rsp.Type)
+	if err := defaultPendingManager.add(s); err != nil {
+		d["alert"] = err.Error()
+		render(w, d, "add")
+		return
 	}
 
-	render(w, alert("Successfully added script"), "index")
+	render(w, alert("Script will appear in index soon"), "index")
 	return
 }
 
@@ -125,6 +111,34 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
 	render(w, nil, "index")
 	return
+}
+
+func pendingHandler(w http.ResponseWriter, r *http.Request) {
+	Logger(w, r)
+
+	if r.Method == "GET" {
+		scripts := defaultPendingManager.read()
+		results := map[string]interface{}{
+			"results": scripts,
+			"total":   len(scripts),
+		}
+		render(w, results, "pending")
+		return
+	}
+
+	if r.Method != "POST" {
+		return
+	}
+
+	id, _ := strconv.ParseInt(r.FormValue("id"), 10, 64)
+	url := r.FormValue("url")
+
+	if err := defaultPendingManager.approve(id, url); err != nil {
+		render(w, alert(err.Error()), "pending")
+		return
+	}
+
+	render(w, alert("Script approved"), "pending")
 }
 
 func scriptsHandler(w http.ResponseWriter, r *http.Request) {
