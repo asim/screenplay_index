@@ -85,14 +85,34 @@
       .search button {
         float: right;
       }
+      .search-ico a {
+        background: url('/static/image/s.png') no-repeat;
+        display: inline-block;
+        text-indent:-9999px;
+        width: 16px;
+      }
+      .home-ico a {
+        background: url('/static/image/h.png') no-repeat;
+        display: inline-block;
+        text-indent:-9999px;
+        width: 16px;
+      }
+      .search-ico a:hover {
+        background: url('/static/image/sh.png') no-repeat;
+        cursor: hand;
+      }
+      .home-ico a:hover {
+        background: url('/static/image/hh.png') no-repeat;
+        cursor: hand;
+      }
     </style>
   </head>
   <body>
     <ul class="nav">
-      <li><a href="/">home</a></li>
+      <li class="home-ico"><a href="/">h</a></li>
       <li><a href="/scripts">scripts</a></li>
       <li><a href="/add">+add</a></li>
-      <li><a href="/"><img src="/static/image/s.png"/></a></li>
+      <li class="search-ico"><a href="/">s</a></li>
     </ul>
     {{#alert}}<center class="alert">{{alert}}</center>{{/alert}}
     {{{content}}}
