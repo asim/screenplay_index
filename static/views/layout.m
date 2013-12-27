@@ -9,7 +9,8 @@
         color: #404040;
       }
       body {
-	min-width: 320px;
+	padding: 10px 10% 10px 10%;
+	min-width: 280px;
         max-width: 960px;
 	margin: 0 auto;
       }
@@ -20,6 +21,7 @@
       }
       ul {
         list-style-type: none;
+	padding: 0;
       }
       li {
         display: inline;
@@ -30,20 +32,20 @@
       }
       .center {
         text-align: center;
-        padding: 10% 20% 10% 20%;
+	padding-top: 80px;
       }
-      .center-form {
-        text-align: center;
-        padding: 5% 20% 5% 20%;
+      .center .search {
+        margin: 0 auto;
       }
       .input {
         width: 100%;
+        max-width: 600px;
 	padding: 5px;
 	font-weight: bold;
 	border: 1px solid #4285f4;
       }
       .nav {
-        padding-top: 10px;
+        padding: 10px 0 0 0;
       }
       .nav a {
         text-decoration: none;
@@ -55,9 +57,6 @@
         width: 100%;
         color: red;
 	font-weight: bold;
-      }
-      .main {
-        padding: 0 40px 0 40px;
       }
       .results {
         padding: 0;

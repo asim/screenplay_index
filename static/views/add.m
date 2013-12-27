@@ -1,4 +1,4 @@
-    <div class="center-form">
+    <div class="center">
       <h1>Add Script</h1>
       <form action="/add" method="post">
 	<p>Title</p>
