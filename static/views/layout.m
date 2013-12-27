@@ -25,6 +25,9 @@
         display: inline;
 	padding-right: 10px;
       }
+      ul img {
+	vertical-align: bottom;
+      }
       .center {
         text-align: center;
         padding: 10% 20% 10% 20%;
@@ -89,6 +92,7 @@
       <li><a href="/">home</a></li>
       <li><a href="/scripts">scripts</a></li>
       <li><a href="/add">+add</a></li>
+      <li><a href="/"><img src="/static/image/s.png"/></a></li>
     </ul>
     {{#alert}}<center class="alert">{{alert}}</center>{{/alert}}
     {{{content}}}
