@@ -47,7 +47,7 @@ func addScript(title, uri string) error {
 		return err
 	}
 
-	log.Println("indexed item %v response (id, type):", s, rsp.Id, rsp.Type)
+	log.Println("indexed item, response (id, type):", s, rsp.Id, rsp.Type)
 	return nil
 }
 

@@ -20,6 +20,17 @@ const (
 
 func adderHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
+
+	if !defaultAdminManager.auth(r) {
+		http.Redirect(w, r, r.Referer(), 403)
+		return
+	}
+
+	if r.Method != "POST" {
+		http.Redirect(w, r, r.Referer(), 500)
+		return
+	}
+
 	title := strings.TrimSpace(r.FormValue("title"))
 	uri := strings.TrimSpace(r.FormValue("url"))
 
@@ -42,6 +53,7 @@ func adderHandler(w http.ResponseWriter, r *http.Request) {
 
 func addHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
+
 	if r.Method == "GET" {
 		d := map[string]string{
 			"captcha": captcha.New(),
@@ -117,8 +129,14 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
 
 	if r.Method == "GET" {
+		if !defaultAdminManager.authIP(r) {
+			http.Redirect(w, r, r.Referer(), 403)
+			return
+		}
+
 		scripts := defaultPendingManager.read()
 		results := map[string]interface{}{
+			"admin": defaultAdminManager.get(r),
 			"results": scripts,
 			"total":   len(scripts),
 		}
@@ -126,7 +144,13 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !defaultAdminManager.auth(r) {
+		http.Redirect(w, r, r.Referer(), 403)
+		return
+	}
+
 	if r.Method != "POST" {
+		http.Redirect(w, r, r.Referer(), 403)
 		return
 	}
 

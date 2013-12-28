@@ -13,7 +13,7 @@ func Logger(w http.ResponseWriter, r *http.Request) {
 func Run(host string) {
 	// admin handlers
 	//http.HandleFunc("/_add", adderHandler)
-	//http.HandleFunc("/_pending", pendingHandler)
+	http.HandleFunc("/_pending", pendingHandler)
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.Handle("/captcha/", captcha.Server(captcha.StdWidth, captcha.StdHeight))
