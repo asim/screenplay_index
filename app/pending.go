@@ -11,8 +11,8 @@ import (
 )
 
 type pending struct {
-	Script   script
-	Approved bool
+	Script script
+	State  string
 }
 
 type pendingManager struct {
@@ -34,8 +34,8 @@ func init() {
 
 func newPending(s script) pending {
 	return pending{
-		Script:   s,
-		Approved: false,
+		Script: s,
+		State:  "pending",
 	}
 }
 
@@ -78,7 +78,11 @@ func (p *pendingManager) approve(id int64, url string) error {
 		return fmt.Errorf("Id provided %d does not match script id %d", id, np.Script.Id)
 	}
 
-	np.Approved = true
+	if np.State != "pending" {
+		return fmt.Errorf("Script not pending approval. State %s", np.State)
+	}
+
+	np.State = "approved"
 	delete(p.pending, url)
 
 	if err := addScript(np.Script.Title, np.Script.Url); err != nil {
@@ -135,7 +139,7 @@ func (p *pendingManager) load() {
 			break
 		}
 		p.pending[pp.Script.Url] = pp
-		if pp.Approved {
+		if pp.State == "approved" || pp.State == "rejected" {
 			delete(p.pending, pp.Script.Url)
 		}
 	}
@@ -151,4 +155,32 @@ func (p *pendingManager) read() []script {
 	}
 
 	return scripts
+}
+
+func (p *pendingManager) reject(id int64, url string) error {
+	p.mtx.Lock()
+	defer p.mtx.Unlock()
+
+	if _, ok := p.pending[url]; !ok {
+		return fmt.Errorf("Script not in pending queue")
+	}
+
+	np := p.pending[url]
+	if id != np.Script.Id {
+		return fmt.Errorf("Id provided %d does not match script id %d", id, np.Script.Id)
+	}
+
+	if np.State != "pending" {
+		return fmt.Errorf("Script not pending approval. State %s", np.State)
+	}
+
+	np.State = "rejected"
+	delete(p.pending, url)
+
+	if err := p.enc.Encode(&np); err != nil {
+		log.Println(err)
+		return fmt.Errorf("Error saving pending state", err)
+	}
+
+	return nil
 }

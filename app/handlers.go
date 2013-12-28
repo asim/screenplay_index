@@ -149,20 +149,28 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.Method != "POST" {
-		http.Redirect(w, r, r.Referer(), 403)
-		return
-	}
-
 	id, _ := strconv.ParseInt(r.FormValue("id"), 10, 64)
 	url := r.FormValue("url")
 
-	if err := defaultPendingManager.approve(id, url); err != nil {
-		http.Redirect(w, r, r.Referer(), 200)
+	if r.Method == "POST" {
+		if r.FormValue("_method") == "DELETE" {
+			if err := defaultPendingManager.reject(id, url); err != nil {
+				render(w, alert(err.Error()), "pending")
+				return
+			}
+
+			http.Redirect(w, r, r.Referer(), 302)
+			return
+		}
+
+		if err := defaultPendingManager.approve(id, url); err != nil {
+			render(w, alert(err.Error()), "pending")
+			return
+		}
+
+		http.Redirect(w, r, r.Referer(), 302)
 		return
 	}
-
-	render(w, alert("Script approved"), "pending")
 }
 
 func scriptsHandler(w http.ResponseWriter, r *http.Request) {
