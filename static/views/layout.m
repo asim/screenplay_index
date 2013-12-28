@@ -55,7 +55,7 @@
       }
       .alert {
         width: 100%;
-        color: red;
+        color: #dd4b39;
 	font-weight: bold;
       }
       .results {
