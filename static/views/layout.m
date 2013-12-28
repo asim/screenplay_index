@@ -68,12 +68,6 @@
       .domain {
         color: #006621;
       }
-      .link input {
-	padding: 0;
-        margin: 0;
-        width: 200px;
-	border: 1px solid #222;
-      }
       .search {
         max-width: 600px;
       }
@@ -106,6 +100,20 @@
         background: url('/static/image/hh.png') no-repeat;
         cursor: hand;
       }
+      .share {
+        display: inline;
+        padding-left: 5px;
+      }
+      .share input {
+	padding: 0;
+        margin: 0;
+        width: 200px;
+	border: 1px solid #4285f4;
+        background: #f1f1f1;
+      }
+      .share li {
+        display: inline;
+      }
     </style>
   </head>
   <body>
@@ -121,8 +129,8 @@
     <script>
       function shareLink(obj) {
 	href = obj.getAttribute("href");
-	input = obj.parentNode.getElementsByTagName("input")[0];
-	input.style.display = 'inline-block';
+	input = obj.parentNode.parentNode.getElementsByTagName("input")[0];
+	input.style.display = 'inline';
 	input.value = location.protocol + '//' + location.hostname + href;
 	input.select();
 	return false;
