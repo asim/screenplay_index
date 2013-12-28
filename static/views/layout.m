@@ -47,7 +47,8 @@
 	border: 1px solid #4285f4;
       }
       .nav {
-        padding: 10px 0 0 0;
+        padding: 0;
+	display: inline-block;
       }
       .nav a {
         text-decoration: none;
@@ -121,7 +122,7 @@
   <body>
     <ul class="nav">
       <li class="home-ico"><a href="/">h</a></li>
-      <li><a href="/scripts">scripts</a></li>
+      <li><a href="/scripts">latest</a></li>
       <li><a href="/add">+add</a></li>
       <li class="search-ico"><a href="/">s</a></li>
     </ul>

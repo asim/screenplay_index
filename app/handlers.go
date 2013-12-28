@@ -125,6 +125,36 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+func latestHandler(w http.ResponseWriter, r *http.Request) {
+	Logger(w, r)
+	sort := search.Sort("id").Desc()
+	out, err := search.Search("scripts").Type("script").From("0").Size(itemSize).Sort(sort).Result()
+	if err != nil {
+		log.Println("Error:", err)
+		render(w, alert("Problem retrieving scripts"), "scripts")
+		return
+	}
+
+	var scripts []script
+	for _, hit := range out.Hits.Hits {
+		var s script
+		err := json.Unmarshal(hit.Source, &s)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		scripts = append(scripts, s)
+	}
+
+	d := map[string]interface{}{
+		"results": scripts,
+	}
+
+	render(w, d, "scripts")
+	return
+}
+
 func pendingHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
 
