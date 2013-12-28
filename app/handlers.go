@@ -136,7 +136,7 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 
 		scripts := defaultPendingManager.read()
 		results := map[string]interface{}{
-			"admin": defaultAdminManager.get(r),
+			"admin":   defaultAdminManager.get(r),
 			"results": scripts,
 			"total":   len(scripts),
 		}
@@ -158,7 +158,7 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 	url := r.FormValue("url")
 
 	if err := defaultPendingManager.approve(id, url); err != nil {
-		render(w, alert(err.Error()), "pending")
+		http.Redirect(w, r, r.Referer(), 200)
 		return
 	}
 

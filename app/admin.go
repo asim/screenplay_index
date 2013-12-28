@@ -1,12 +1,12 @@
 package app
 
 import (
-	"io/ioutil"
-	"sync"
 	"bytes"
-	"strings"
-	"net/http"
+	"io/ioutil"
 	"net"
+	"net/http"
+	"strings"
+	"sync"
 )
 
 type admin struct {
@@ -14,12 +14,12 @@ type admin struct {
 }
 
 type adminManager struct {
-	mtx sync.RWMutex
+	mtx    sync.RWMutex
 	admins map[string]admin
 }
 
 var (
-	adminFile = "admins"
+	adminFile           = "admins"
 	defaultAdminManager = newAdminManager()
 )
 
@@ -84,32 +84,32 @@ func (a *adminManager) auth(r *http.Request) bool {
 }
 
 func (a *adminManager) authIP(r *http.Request) bool {
-        ip := r.Header.Get("X-Forwarded-For")
-        if ip == "" {
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip == "" {
 		h, _, err := net.SplitHostPort(r.RemoteAddr)
 		if err != nil {
 			return false
 		}
 		ip = h
-        }
+	}
 
 	a.mtx.RLock()
-        defer a.mtx.RUnlock()
+	defer a.mtx.RUnlock()
 
-        // Authed ip?
-        _, exists := a.admins[ip]
+	// Authed ip?
+	_, exists := a.admins[ip]
 	return exists
 }
 
 func (a *adminManager) get(r *http.Request) admin {
-        ip := r.Header.Get("X-Forwarded-For")
-        if ip == "" {
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip == "" {
 		h, _, err := net.SplitHostPort(r.RemoteAddr)
 		if err != nil {
 			return admin{}
 		}
 		ip = h
-        }
+	}
 
 	a.mtx.RLock()
 	defer a.mtx.RUnlock()
