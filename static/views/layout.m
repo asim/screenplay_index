@@ -52,6 +52,7 @@
       }
       .nav a {
         text-decoration: none;
+	color: #404040;
       }
       .nav a:hover {
         text-decoration: underline;
