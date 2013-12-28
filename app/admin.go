@@ -1,7 +1,6 @@
 package app
 
 import (
-	"log"
 	"io/ioutil"
 	"sync"
 	"bytes"
@@ -115,6 +114,5 @@ func (a *adminManager) get(r *http.Request) admin {
 	a.mtx.RLock()
 	defer a.mtx.RUnlock()
 	admin := a.admins[ip]
-	log.Println(admin)
 	return admin
 }
