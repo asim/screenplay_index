@@ -1,9 +1,9 @@
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1">
-    <meta name="description" content="A screenplay index">
+    <meta name="description" content="Search engine to help you find screenplays in pdf form.">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Got Scripts?</title>
+    <title>Scridx - A Screenplay Index</title>
     <style type="text/css">
       html {
         font-family: arial,sans-serif;
