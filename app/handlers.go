@@ -268,8 +268,10 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	qe := url.QueryEscape(q)
-	out, err := search.Search("scripts").Type("script").Search(qe).From(from).Size(size).Result()
+	qs := search.NewQueryString("title", url.QueryEscape(q))
+	qe := search.Query().Qs(&qs)
+
+	out, err := search.Search("scripts").Type("script").Query(qe).From(from).Size(size).Result()
 	if err != nil {
 		log.Println("Error:", err)
 		http.Redirect(w, r, r.Referer(), 302)
