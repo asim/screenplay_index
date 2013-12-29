@@ -18,6 +18,7 @@ import (
 var (
 	templateCache = make(map[string]*mustache.Template)
 	alphanum      = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+	pageLimit     = 20
 )
 
 type script struct {
@@ -113,6 +114,10 @@ func getPageOffset(vars url.Values, limit int) (int, int) {
 	page, err := strconv.Atoi(vars.Get("page"))
 	if err != nil {
 		page = 1
+	}
+
+	if page > pageLimit {
+		page = pageLimit
 	}
 
 	next := page - 1
