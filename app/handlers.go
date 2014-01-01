@@ -104,6 +104,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 
 	s := script{
 		Id:    time.Now().Unix(),
+		Meta: "",
 		Title: title,
 		Url:   uri,
 		Short: shorten(uri),

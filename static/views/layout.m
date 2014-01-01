@@ -62,8 +62,12 @@
         color: #dd4b39;
 	font-weight: bold;
       }
+      .meta {
+        color: #444;
+      }
       .results {
         padding: 0;
+	max-width: 600px;
       }
       .results li {
         display: block;
@@ -71,6 +75,7 @@
       }
       .domain {
         color: #006621;
+	margin: 1px 0 1px 0;
       }
       .search {
         max-width: 600px;

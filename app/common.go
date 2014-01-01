@@ -23,7 +23,7 @@ var (
 
 type script struct {
 	Id                int64
-	Title, Url, Short string
+	Meta, Title, Url, Short string
 }
 
 func (s script) Domain() string {
@@ -37,6 +37,7 @@ func (s script) Domain() string {
 func addScript(title, uri string) error {
 	s := map[string]interface{}{
 		"id":    time.Now().Unix(),
+		"meta": "",
 		"title": title,
 		"url":   uri,
 		"short": shorten(uri),
