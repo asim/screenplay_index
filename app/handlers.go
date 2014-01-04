@@ -275,7 +275,8 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	qs := search.NewQueryString("title", url.QueryEscape(q))
+	qs := search.QueryString{"", "", url.QueryEscape(q), "", "", []string{"title", "meta"}}
+	//	qs := search.NewQueryString("title", url.QueryEscape(q))
 	qe := search.Query().Qs(&qs)
 
 	out, err := search.Search("scripts").Type("script").Query(qe).From(from).Size(size).Result()
