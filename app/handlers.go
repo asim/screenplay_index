@@ -336,5 +336,5 @@ func shortHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// The redirect
-	http.Redirect(w, r, s.Url, 302)
+	http.Redirect(w, r, s.Url, 301)
 }
