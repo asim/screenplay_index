@@ -126,6 +126,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	case "/", "/index.html", "/index.htm":
 		render(w, nil, "index")
 	default:
+		w.WriteHeader(http.StatusNotFound)
 		render(w, nil, "404")
 	}
 	return
