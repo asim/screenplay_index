@@ -104,7 +104,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 
 	s := script{
 		Id:    time.Now().Unix(),
-		Meta: "",
+		Meta:  "",
 		Title: title,
 		Url:   uri,
 		Short: shorten(uri),
@@ -122,7 +122,12 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
-	render(w, nil, "index")
+	switch r.URL.Path {
+	case "/", "/index.html", "/index.htm":
+		render(w, nil, "index")
+	default:
+		render(w, nil, "404")
+	}
 	return
 }
 

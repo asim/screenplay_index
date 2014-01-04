@@ -34,7 +34,7 @@
       }
       .center {
         text-align: center;
-	padding-top: 80px;
+	padding-top: 10%;
       }
       .center .search {
         margin: 0 auto;
@@ -72,6 +72,11 @@
       .results li {
         display: block;
         padding-bottom: 10px;
+      }
+      .doodle img {
+        max-width: 100%;
+        height: auto;
+        width: auto\9;"
       }
       .domain {
         color: #006621;
