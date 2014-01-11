@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1">
-    <meta name="description" content="Search engine to help you find screenplays in pdf form.">
+    <meta name="description" content="The screenplay search engine to help you find the script you're looking for. 1000s of screenplays in pdf format.">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Scridx - A Screenplay Index</title>
     <style type="text/css">
@@ -20,6 +20,12 @@
 	background: #f1f1f1;
 	border: 1px solid #dcdcdc;
         padding:5px;
+      }
+      button:active {
+        background: #E4E4E4;
+      }
+      button:hover {
+        border: 1px solid #C3C3C3;
       }
       ul {
         list-style-type: none;
@@ -73,6 +79,9 @@
         display: block;
         padding-bottom: 10px;
       }
+      .right {
+        float: right;
+      }
       .doodle img {
         max-width: 100%;
         height: auto;
@@ -92,6 +101,9 @@
       .search button {
         float: right;
       }
+      .search *:focus {
+        outline: none;
+      }
       .search-ico a {
         background: url('/static/image/s.png') no-repeat;
         display: inline-block;
@@ -105,6 +117,13 @@
         text-indent:-9999px;
         width: 16px;
         overflow: hidden;
+      }
+      .t-ico {
+	padding: 0;
+      }
+      .t-ico img {
+        width: 16px;
+        height: auto;
       }
       .search-ico a:hover {
         background: url('/static/image/sh.png') no-repeat;
@@ -136,6 +155,9 @@
       <li><a href="/scripts">latest</a></li>
       <li><a href="/add">+add</a></li>
       <li class="search-ico"><a href="/">s</a></li>
+    </ul>
+    <ul class="nav right">
+      <li class="t-ico right"><a href="https://twitter.com/scridx"><img src="/static/image/t.png"/></a></li>
     </ul>
     {{#alert}}<center class="alert">{{alert}}</center>{{/alert}}
     {{{content}}}
