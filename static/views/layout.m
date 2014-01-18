@@ -104,34 +104,12 @@
       .search *:focus {
         outline: none;
       }
-      .search-ico a {
-        background: url('/static/image/s.png') no-repeat;
-        display: inline-block;
-        text-indent:-9999px;
-        width: 16px;
-        overflow: hidden;
-      }
-      .home-ico a {
-        background: url('/static/image/h.png') no-repeat;
-        display: inline-block;
-        text-indent:-9999px;
-        width: 16px;
-        overflow: hidden;
-      }
       .t-ico {
 	padding: 0;
       }
       .t-ico img {
         width: 16px;
         height: auto;
-      }
-      .search-ico a:hover {
-        background: url('/static/image/sh.png') no-repeat;
-        cursor: hand;
-      }
-      .home-ico a:hover {
-        background: url('/static/image/hh.png') no-repeat;
-        cursor: hand;
       }
       .share {
         display: inline;
@@ -151,10 +129,10 @@
   </head>
   <body>
     <ul class="nav">
-      <li class="home-ico"><a href="/">h</a></li>
+      <li class="home-ico"><a href="/"><img src="/static/image/h.png"/></a></li>
       <li><a href="/scripts">latest</a></li>
       <li><a href="/add">+add</a></li>
-      <li class="search-ico"><a href="/">s</a></li>
+      <li class="search-ico"><a href="/"><img src="/static/image/s.png"/></a></li>
     </ul>
     <ul class="nav right">
       <li class="t-ico right"><a href="https://twitter.com/scridx"><img src="/static/image/t.png"/></a></li>
