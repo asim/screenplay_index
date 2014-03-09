@@ -398,7 +398,7 @@ func trendingHandler(w http.ResponseWriter, r *http.Request) {
 
 	var scripts []script
 
-	if len(trending) < numRanked {
+	if len(trending) < numRanked/2 {
 		sort := search.Sort("short").Desc()
 		if out, err := search.Search("scripts").Type("script").From("0").Size("20").Sort(sort).Result(); err == nil {
 			for _, hit := range out.Hits.Hits {
