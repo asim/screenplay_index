@@ -69,7 +69,7 @@ func (t *trendingManager) update(s *script, ip string) {
 		t.seen[s.Short+ip] = true
 	}
 
-	if len(t.trending) < numRanked/2 {
+	if len(t.trending) < numRanked {
 		items := t.rm.GetRankings()
 		var trending []*script
 
