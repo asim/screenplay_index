@@ -131,6 +131,7 @@
     <ul class="nav">
       <li class="home-ico"><a href="/"><img src="/static/image/h.png"/></a></li>
       <li><a href="/scripts">latest</a></li>
+      <li><a href="/trending">trending</a></li>
       <li><a href="/add">+add</a></li>
       <li class="search-ico"><a href="/"><img src="/static/image/s.png"/></a></li>
     </ul>

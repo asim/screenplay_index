@@ -22,6 +22,8 @@ func Run(host string) {
 	http.HandleFunc("/scripts", latestHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/s/", shortHandler)
+	http.HandleFunc("/url", urlHandler)
+	http.HandleFunc("/trending", trendingHandler)
 	log.Println("Starting listening on", host)
 	log.Fatal(http.ListenAndServe(host, nil))
 

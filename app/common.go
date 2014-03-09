@@ -26,6 +26,10 @@ type script struct {
 	Meta, Title, Url, Short string
 }
 
+func (s *script) ID() string {
+	return s.Short
+}
+
 func (s script) Domain() string {
 	u, err := url.Parse(s.Url)
 	if err != nil {

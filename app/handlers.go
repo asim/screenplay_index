@@ -324,7 +324,8 @@ func shortHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if out.Hits.Len() != 1 {
-		http.NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
+		render(w, nil, "404")
 		return
 	}
 
@@ -338,4 +339,88 @@ func shortHandler(w http.ResponseWriter, r *http.Request) {
 
 	// The redirect
 	http.Redirect(w, r, s.Url, 301)
+
+	// Trending click event
+	defaultTrendingManager.click(&s, r.Header.Get("X-Forwarded-For"))
+}
+
+func urlHandler(w http.ResponseWriter, r *http.Request) {
+	Logger(w, r)
+	vars := r.URL.Query()
+	id := vars.Get("s")
+	u := vars.Get("url")
+
+	if len(id) == 0 || len(u) == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		render(w, nil, "404")
+		return
+	}
+
+	out, err := search.Search("scripts").Type("script").Search("short:" + id).Size("1").Result()
+	if err != nil {
+		log.Println("Error:", err)
+		w.WriteHeader(http.StatusNotFound)
+		render(w, nil, "404")
+		return
+	}
+
+	if out.Hits.Len() != 1 {
+		w.WriteHeader(http.StatusNotFound)
+		render(w, nil, "404")
+		return
+	}
+
+	var s script
+	err = json.Unmarshal(out.Hits.Hits[0].Source, &s)
+	if err != nil {
+		log.Println(err)
+		http.Redirect(w, r, r.Referer(), 302)
+		return
+	}
+
+	if su, _ := url.QueryUnescape(s.Url); u != su {
+		w.WriteHeader(http.StatusNotFound)
+		render(w, nil, "404")
+		return
+	}
+
+	// The redirect
+	http.Redirect(w, r, s.Url, 301)
+
+	// Trending click event
+	defaultTrendingManager.click(&s, r.Header.Get("X-Forwarded-For"))
+}
+
+func trendingHandler(w http.ResponseWriter, r *http.Request) {
+	Logger(w, r)
+
+	trending := defaultTrendingManager.getTrending()
+
+	var scripts []script
+
+	if len(trending) < numRanked {
+		sort := search.Sort("short").Desc()
+		if out, err := search.Search("scripts").Type("script").From("0").Size("20").Sort(sort).Result(); err == nil {
+			for _, hit := range out.Hits.Hits {
+				var s script
+				err := json.Unmarshal(hit.Source, &s)
+				if err != nil {
+					continue
+				}
+
+				scripts = append(scripts, s)
+			}
+		}
+	} else {
+		for _, script := range trending {
+			scripts = append(scripts, *script)
+		}
+	}
+
+	d := map[string]interface{}{
+		"results": scripts,
+	}
+
+	render(w, d, "trending")
+	return
 }
