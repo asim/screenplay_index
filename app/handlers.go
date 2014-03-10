@@ -341,7 +341,7 @@ func shortHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, s.Url, 301)
 
 	// Trending click event
-	defaultTrendingManager.click(&s, r.Header.Get("X-Forwarded-For"))
+	defaultTrendingManager.click(&s, getIp(r))
 }
 
 func urlHandler(w http.ResponseWriter, r *http.Request) {
@@ -388,7 +388,7 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, s.Url, 301)
 
 	// Trending click event
-	defaultTrendingManager.click(&s, r.Header.Get("X-Forwarded-For"))
+	defaultTrendingManager.click(&s, getIp(r))
 }
 
 func trendingHandler(w http.ResponseWriter, r *http.Request) {
@@ -412,9 +412,7 @@ func trendingHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	} else {
-		for _, script := range trending {
-			scripts = append(scripts, *script)
-		}
+		scripts = trending
 	}
 
 	d := map[string]interface{}{

@@ -4,6 +4,7 @@ import (
 	//"fmt"
 	//"time"
 	"container/heap"
+	"sort"
 )
 
 type rollingCounter struct {
@@ -147,7 +148,9 @@ func (r *RankingsManager) update(item object) {
 }
 
 func (r *RankingsManager) GetRankings() *rankings {
-	return r.r
+	rankings := *r.r
+	sort.Sort(rankings)
+	return &rankings
 }
 
 func (r *RankingsManager) Update(item object) {

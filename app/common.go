@@ -115,6 +115,14 @@ func shorten(url string) string {
 	return "shortend"
 }
 
+func getIp(r *http.Request) string {
+	if ip := r.Header.Get("X-Forwarded-For"); len(ip) > 0 {
+		return ip
+	}
+
+	return r.RemoteAddr
+}
+
 func getPageOffset(vars url.Values, limit int) (int, int) {
 	page, err := strconv.Atoi(vars.Get("page"))
 	if err != nil {
