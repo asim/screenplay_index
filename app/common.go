@@ -38,6 +38,11 @@ func (s script) Domain() string {
 	return u.Host
 }
 
+func (s script) Uri() string {
+	u, _ := url.QueryUnescape(s.Url)
+	return url.QueryEscape(u)
+}
+
 func addScript(title, uri string) error {
 	s := map[string]interface{}{
 		"id":    time.Now().Unix(),
