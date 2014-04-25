@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/dchest/captcha"
+	"github.com/mattbaird/elastigo/api"
+	"github.com/mattbaird/elastigo/core"
 	"github.com/mattbaird/elastigo/search"
 	"log"
 	"net/http"
@@ -209,6 +211,58 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func randomHandler(w http.ResponseWriter, r *http.Request) {
+	Logger(w, r)
+
+	args := map[string]interface{}{
+		"query": map[string]interface{}{
+			"function_score" : map[string]interface{}{
+				"query" : map[string]interface{}{
+					"match_all": map[string]interface{}{},
+				},
+				"random_score" : map[string]interface{}{},
+			},
+		},
+		"size": 1,
+	}
+
+	out, err := api.DoCommand("POST", "/scripts/script/_search", args)
+	if err != nil {
+		log.Println("Error:", err)
+		render(w, alert("Problem retrieving script"), "random")
+		return
+	}
+
+	var retval core.SearchResult
+
+	if err := json.Unmarshal(out, &retval); err != nil {
+		log.Println("Error:", err)
+		render(w, alert("Problem retrieving script"), "random")
+		return
+	}
+
+	var scripts []script
+	for _, hit := range retval.Hits.Hits {
+		var s script
+		err := json.Unmarshal(hit.Source, &s)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		scripts = append(scripts, s)
+	}
+
+	d := map[string]interface{}{
+		"results": scripts,
+		"total":   retval.Hits.Total,
+	}
+
+	render(w, d, "random")
+	return
+}
+
 
 func scriptsHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)

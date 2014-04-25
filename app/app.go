@@ -19,6 +19,7 @@ func Run(host string) {
 	http.Handle("/captcha/", captcha.Server(captcha.StdWidth, captcha.StdHeight))
 	http.HandleFunc("/add", addHandler)
 	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/random", randomHandler)
 	http.HandleFunc("/scripts", latestHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/s/", shortHandler)

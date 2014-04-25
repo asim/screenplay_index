@@ -71,6 +71,9 @@
       .meta {
         color: #444;
       }
+      .random-results {
+	margin: 0 auto;
+      }
       .results {
         padding: 0;
 	max-width: 600px;
@@ -132,6 +135,7 @@
       <li class="home-ico"><a href="/"><img src="/static/image/h.png"/></a></li>
       <li><a href="/scripts">latest</a></li>
       <li><a href="/trending">trending</a></li>
+      <li><a href="/random">random</a></li>
       <li><a href="/add">+add</a></li>
       <li class="search-ico"><a href="/"><img src="/static/image/s.png"/></a></li>
     </ul>
