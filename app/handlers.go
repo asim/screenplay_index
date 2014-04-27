@@ -217,11 +217,11 @@ func randomHandler(w http.ResponseWriter, r *http.Request) {
 
 	args := map[string]interface{}{
 		"query": map[string]interface{}{
-			"function_score" : map[string]interface{}{
-				"query" : map[string]interface{}{
+			"function_score": map[string]interface{}{
+				"query": map[string]interface{}{
 					"match_all": map[string]interface{}{},
 				},
-				"random_score" : map[string]interface{}{},
+				"random_score": map[string]interface{}{},
 			},
 		},
 		"size": 1,
@@ -262,7 +262,6 @@ func randomHandler(w http.ResponseWriter, r *http.Request) {
 	render(w, d, "random")
 	return
 }
-
 
 func scriptsHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
@@ -329,7 +328,18 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	qs := search.QueryString{"", "", url.QueryEscape(q), "", "", []string{"title", "meta"}}
+	var nq string
+
+	for _, r := range q {
+		s := string(r)
+		switch s {
+		case "+", "-", "&&", "||", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", "*", "?", ":", "\\", "/":
+			nq += "\\"
+		}
+		nq += s
+	}
+
+	qs := search.QueryString{"", "", nq, "", "", []string{"title", "meta"}}
 	//	qs := search.NewQueryString("title", url.QueryEscape(q))
 	qe := search.Query().Qs(&qs)
 
