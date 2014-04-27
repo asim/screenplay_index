@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
-	"strings"
-	"bytes"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 /*
@@ -66,9 +66,9 @@ func main() {
 			continue
 		}
 
-//		id := u[:len(u)-1]
+		//		id := u[:len(u)-1]
 		id := w[0]
-		meta, err := ioutil.ReadFile(filepath.Join(dir, "meta", id + ".meta"))
+		meta, err := ioutil.ReadFile(filepath.Join(dir, "meta", id+".meta"))
 		if err != nil {
 			fmt.Println(err)
 			continue
@@ -89,7 +89,7 @@ func main() {
 		}
 
 		if len(m) > 0 {
-			ioutil.WriteFile(filepath.Join(dir, "m", id), []byte(strings.Join(m, " ") + "..."), 0666)
+			ioutil.WriteFile(filepath.Join(dir, "m", id), []byte(strings.Join(m, " ")+"..."), 0666)
 		}
 	}
 }
