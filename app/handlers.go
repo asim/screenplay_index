@@ -215,6 +215,14 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 func randomHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
 
+	defaultTrackingManager.track(getIp(r), r.URL.Path)
+	count := defaultTrackingManager.get(getIp(r), r.URL.Path)
+
+	if count > 100 {
+		http.Redirect(w, r, "/", 302)
+		return
+	}
+
 	args := map[string]interface{}{
 		"query": map[string]interface{}{
 			"function_score": map[string]interface{}{
