@@ -19,7 +19,7 @@
       body a {
 	color: #595959;
 	font-size: 1.2em;
-	font-weight: 600;
+	font-weight: bold;
         text-decoration: none;
       }
       body a:hover {
