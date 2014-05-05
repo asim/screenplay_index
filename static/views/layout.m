@@ -16,6 +16,15 @@
         max-width: 960px;
 	margin: 0 auto;
       }
+      body a {
+        color: #404040;
+	font-size: 1.2em;
+        text-decoration: none;
+	font-weight: bold;
+      }
+      body a:hover {
+	text-decoration: underline;
+      }
       button {
 	background: #f1f1f1;
 	border: 1px solid #dcdcdc;
@@ -57,6 +66,7 @@
 	display: inline-block;
       }
       .nav a {
+	font-size: small;
         text-decoration: none;
 	color: #404040;
       }
@@ -73,6 +83,9 @@
       }
       .random-results {
 	margin: 0 auto;
+      }
+      .random-results li h1 {
+	margin-bottom: 0;
       }
       .results {
         padding: 0;
@@ -91,7 +104,7 @@
         width: auto\9;"
       }
       .domain {
-        color: #006621;
+        color: #A0A0A0;
 	margin: 1px 0 1px 0;
       }
       .search {
@@ -127,6 +140,7 @@
       }
       .share li {
         display: inline;
+	padding: 0;
       }
     </style>
   </head>
