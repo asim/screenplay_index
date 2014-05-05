@@ -28,7 +28,7 @@
       button {
 	background: #f1f1f1;
 	border: 1px solid #dcdcdc;
-        padding:5px;
+        padding: 10px;
       }
       button:active {
         background: #E4E4E4;
@@ -57,7 +57,7 @@
       .input {
         width: 100%;
         max-width: 600px;
-	padding: 5px;
+	padding: 10px;
 	color: #595959;
 	font-weight: bold;
 	border: 1px solid #4285f4;
