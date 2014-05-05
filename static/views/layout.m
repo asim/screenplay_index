@@ -8,7 +8,7 @@
       html {
         font-family: arial,sans-serif;
 	font-size: small;
-        color: #404040;
+        color: #595959;
       }
       body {
 	padding: 10px 10% 10px 10%;
@@ -17,10 +17,10 @@
 	margin: 0 auto;
       }
       body a {
-        color: #404040;
+	color: #595959;
 	font-size: 1.2em;
+	font-weight: 600;
         text-decoration: none;
-	font-weight: bold;
       }
       body a:hover {
 	text-decoration: underline;
@@ -58,6 +58,7 @@
         width: 100%;
         max-width: 600px;
 	padding: 5px;
+	color: #595959;
 	font-weight: bold;
 	border: 1px solid #4285f4;
       }
@@ -68,7 +69,6 @@
       .nav a {
 	font-size: small;
         text-decoration: none;
-	color: #404040;
       }
       .nav a:hover {
         text-decoration: underline;
@@ -79,7 +79,7 @@
 	font-weight: bold;
       }
       .meta {
-        color: #444;
+        color: #535353;
       }
       .random-results {
 	margin: 0 auto;
@@ -104,7 +104,7 @@
         width: auto\9;"
       }
       .domain {
-        color: #A0A0A0;
+        color: #858585;
 	margin: 1px 0 1px 0;
       }
       .search {
