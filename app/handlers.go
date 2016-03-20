@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/dchest/captcha"
-	"github.com/mattbaird/elastigo/api"
-	"github.com/mattbaird/elastigo/core"
-	"github.com/mattbaird/elastigo/search"
+	elastigo "github.com/mattbaird/elastigo/lib"
 	"log"
 	"net/http"
 	"net/url"
@@ -136,8 +134,9 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 func latestHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
-	sort := search.Sort("id").Desc()
-	out, err := search.Search("scripts").Type("script").From("0").Size(itemSize).Sort(sort).Result()
+	conn := elastigo.NewConn()
+	sort := elastigo.Sort("id").Desc()
+	out, err := elastigo.Search("scripts").Type("script").From("0").Size(itemSize).Sort(sort).Result(conn)
 	if err != nil {
 		log.Println("Error:", err)
 		render(w, alert("Problem retrieving scripts"), "scripts")
@@ -147,7 +146,7 @@ func latestHandler(w http.ResponseWriter, r *http.Request) {
 	var scripts []script
 	for _, hit := range out.Hits.Hits {
 		var s script
-		err := json.Unmarshal(hit.Source, &s)
+		err := json.Unmarshal(*hit.Source, &s)
 		if err != nil {
 			log.Println(err)
 			continue
@@ -235,14 +234,16 @@ func randomHandler(w http.ResponseWriter, r *http.Request) {
 		"size": 1,
 	}
 
-	out, err := api.DoCommand("POST", "/scripts/script/_search", args)
+	conn := elastigo.NewConn()
+
+	out, err := conn.DoCommand("POST", "/scripts/script/_search", nil, args)
 	if err != nil {
 		log.Println("Error:", err)
 		render(w, alert("Problem retrieving script"), "random")
 		return
 	}
 
-	var retval core.SearchResult
+	var retval elastigo.SearchResult
 
 	if err := json.Unmarshal(out, &retval); err != nil {
 		log.Println("Error:", err)
@@ -253,7 +254,7 @@ func randomHandler(w http.ResponseWriter, r *http.Request) {
 	var scripts []script
 	for _, hit := range retval.Hits.Hits {
 		var s script
-		err := json.Unmarshal(hit.Source, &s)
+		err := json.Unmarshal(*hit.Source, &s)
 		if err != nil {
 			log.Println(err)
 			continue
@@ -279,9 +280,9 @@ func scriptsHandler(w http.ResponseWriter, r *http.Request) {
 
 	page, offset := getPageOffset(vars, limit)
 	from := fmt.Sprintf("%d", offset)
-
-	sort := search.Sort("id").Desc()
-	out, err := search.Search("scripts").Type("script").From(from).Size(size).Sort(sort).Result()
+	conn := elastigo.NewConn()
+	sort := elastigo.Sort("id").Desc()
+	out, err := elastigo.Search("scripts").Type("script").From(from).Size(size).Sort(sort).Result(conn)
 	if err != nil {
 		log.Println("Error:", err)
 		render(w, alert("Problem retrieving scripts"), "scripts")
@@ -291,7 +292,7 @@ func scriptsHandler(w http.ResponseWriter, r *http.Request) {
 	var scripts []script
 	for _, hit := range out.Hits.Hits {
 		var s script
-		err := json.Unmarshal(hit.Source, &s)
+		err := json.Unmarshal(*hit.Source, &s)
 		if err != nil {
 			log.Println(err)
 			continue
@@ -347,11 +348,17 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		nq += s
 	}
 
-	qs := search.QueryString{"", "", nq, "", "", []string{"title", "meta"}}
-	//	qs := search.NewQueryString("title", url.QueryEscape(q))
-	qe := search.Query().Qs(&qs)
-
-	out, err := search.Search("scripts").Type("script").Query(qe).From(from).Size(size).Result()
+	qs := elastigo.QueryString{
+		DefaultOperator: "",
+		DefaultField:    "",
+		Query:           nq,
+		Exists:          "",
+		Missing:         "",
+		Fields:          []string{"title", "meta"},
+	}
+	qe := elastigo.Query().Qs(&qs)
+	conn := elastigo.NewConn()
+	out, err := elastigo.Search("scripts").Type("script").Query(qe).From(from).Size(size).Result(conn)
 	if err != nil {
 		log.Println("Error:", err)
 		http.Redirect(w, r, r.Referer(), 302)
@@ -361,7 +368,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	var scripts []script
 	for _, hit := range out.Hits.Hits {
 		var s script
-		err := json.Unmarshal(hit.Source, &s)
+		err := json.Unmarshal(*hit.Source, &s)
 		if err != nil {
 			log.Println(err)
 			continue
@@ -387,8 +394,9 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 
 func shortHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
+	conn := elastigo.NewConn()
 	id := strings.TrimPrefix(r.RequestURI, "/s/")
-	out, err := search.Search("scripts").Type("script").Search("short:" + id).Size("1").Result()
+	out, err := elastigo.Search("scripts").Type("script").Search("short:" + id).Size("1").Result(conn)
 	if err != nil {
 		log.Println("Error:", err)
 		http.Redirect(w, r, r.Referer(), 302)
@@ -402,7 +410,7 @@ func shortHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var s script
-	err = json.Unmarshal(out.Hits.Hits[0].Source, &s)
+	err = json.Unmarshal(*out.Hits.Hits[0].Source, &s)
 	if err != nil {
 		log.Println(err)
 		http.Redirect(w, r, r.Referer(), 302)
@@ -428,7 +436,8 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	out, err := search.Search("scripts").Type("script").Search("short:" + id).Size("1").Result()
+	conn := elastigo.NewConn()
+	out, err := elastigo.Search("scripts").Type("script").Search("short:" + id).Size("1").Result(conn)
 	if err != nil {
 		log.Println("Error:", err)
 		w.WriteHeader(http.StatusNotFound)
@@ -443,7 +452,7 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var s script
-	err = json.Unmarshal(out.Hits.Hits[0].Source, &s)
+	err = json.Unmarshal(*out.Hits.Hits[0].Source, &s)
 	if err != nil {
 		log.Println(err)
 		http.Redirect(w, r, r.Referer(), 302)
@@ -470,12 +479,14 @@ func trendingHandler(w http.ResponseWriter, r *http.Request) {
 
 	var scripts []script
 
+	conn := elastigo.NewConn()
+
 	if len(trending) < numRanked/2 {
-		sort := search.Sort("short").Desc()
-		if out, err := search.Search("scripts").Type("script").From("0").Size("20").Sort(sort).Result(); err == nil {
+		sort := elastigo.Sort("short").Desc()
+		if out, err := elastigo.Search("scripts").Type("script").From("0").Size("20").Sort(sort).Result(conn); err == nil {
 			for _, hit := range out.Hits.Hits {
 				var s script
-				err := json.Unmarshal(hit.Source, &s)
+				err := json.Unmarshal(*hit.Source, &s)
 				if err != nil {
 					continue
 				}

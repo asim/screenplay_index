@@ -4,121 +4,10 @@
     <meta name="description" content="The screenplay search engine to help you find the script you're looking for. 1000s of screenplays in pdf format.">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Scridx - A Screenplay Index</title>
-    <style type="text/css">
-      html {
-        font-family: arial,sans-serif;
-	font-size: small;
-        color: #595959;
-      }
-      body {
-	padding: 10px 10% 10px 10%;
-	min-width: 280px;
-        max-width: 960px;
-	margin: 0 auto;
-      }
-      body a {
-	color: #595959;
-	font-size: 1.2em;
-	font-weight: bold;
-        text-decoration: none;
-      }
-      body a:hover {
-	text-decoration: underline;
-      }
-      button {
-	background: #f1f1f1;
-	border: 1px solid #dcdcdc;
-        padding: 10px;
-      }
-      button:active {
-        background: #E4E4E4;
-      }
-      button:hover {
-        border: 1px solid #C3C3C3;
-      }
-      ul {
-        list-style-type: none;
-	padding: 0;
-      }
-      li {
-        display: inline;
-	padding-right: 10px;
-      }
-      ul img {
-	vertical-align: bottom;
-      }
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <style>
       .center {
-        text-align: center;
-	padding-top: 10%;
-      }
-      .center .search {
-        margin: 0 auto;
-      }
-      .input {
-        width: 100%;
-        max-width: 600px;
-	padding: 10px;
-	color: #595959;
-	font-weight: bold;
-	border: 1px solid #4285f4;
-      }
-      .nav {
-        padding: 0;
-	display: inline-block;
-      }
-      .nav a {
-	font-size: small;
-        text-decoration: none;
-      }
-      .nav a:hover {
-        text-decoration: underline;
-      }
-      .alert {
-        width: 100%;
-        color: #dd4b39;
-	font-weight: bold;
-      }
-      .meta {
-        color: #535353;
-      }
-      .random-results {
-	margin: 0 auto;
-      }
-      .random-results li h1 {
-	margin-bottom: 0;
-      }
-      .results {
-        padding: 0;
-	max-width: 600px;
-      }
-      .results li {
-        display: block;
-        padding-bottom: 20px;
-      }
-      .right {
-        float: right;
-      }
-      .doodle img {
-        max-width: 100%;
-        height: auto;
-        width: auto\9;"
-      }
-      .domain {
-        color: #858585;
-	margin: 1px 0 1px 0;
-      }
-      .search {
-        max-width: 600px;
-      }
-      .search div {
-        overflow: hidden;
-        max-width: 550px;
-      }
-      .search button {
-        float: right;
-      }
-      .search *:focus {
-        outline: none;
+        margin-top: 100px;
       }
       .t-ico {
 	padding: 0;
@@ -127,38 +16,64 @@
         width: 16px;
         height: auto;
       }
-      .share {
-        display: inline;
-        padding-left: 5px;
-      }
-      .share input {
-	padding: 0;
-        margin: 0;
-        width: 200px;
-	border: 1px solid #4285f4;
-        background: #f1f1f1;
-      }
-      .share li {
-        display: inline;
-	padding: 0;
-      }
     </style>
   </head>
   <body>
-    <ul class="nav">
-      <li class="home-ico"><a href="/"><img src="/static/image/h.png"/></a></li>
-      <li><a href="/scripts">latest</a></li>
-      <li><a href="/trending">trending</a></li>
-      <li><a href="/random">random</a></li>
-      <li><a href="/add">+add</a></li>
-      <li class="search-ico"><a href="/"><img src="/static/image/s.png"/></a></li>
-    </ul>
-    <ul class="nav right">
-      <li class="t-ico right"><a href="https://twitter.com/scridx"><img src="/static/image/t.png"/></a></li>
-    </ul>
-    {{#alert}}<center class="alert">{{alert}}</center>{{/alert}}
-    {{{content}}}
-    {{> _pager.m}}
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Scridx</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/trending">Trending</a></li>
+            <li><a href="/random">Random</a></li>
+            <li>
+              <a href="/add"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add</a>
+            </li>
+            <li>
+              <a href="/"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="t-ico"><a href="https://twitter.com/scridx"><img src="/static/image/t.png"/></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+
+      </div>
+    </nav>
+
+    <div class="container">
+      {{#alert}}
+      <div class="row">
+        <div class="col-md-12"> 
+          <center class="alert">{{alert}}</center>
+        </div>
+      </div>
+      {{/alert}}
+
+      <div class="row">
+        <div class="col-md-12">
+          {{{content}}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          {{> _pager.m}}
+        </div>
+      </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script>
       function shareLink(obj) {
 	href = obj.getAttribute("href");

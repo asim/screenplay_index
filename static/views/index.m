@@ -1,10 +1,16 @@
-<div class="center">
+<center class="center">
+  <p>
   <h1>Scridx</h1>
-  <div class="search">
-    <form action="/search" method="get">
-      <button value="submit">Search</button>
-      <div><input class="input" type="text" name="q" id="q" autofocus="autofocus"/></div>
-    </form>
-  </div>
-  <div>A screenplay search engine.</div>
-</div>
+  <form action="/search" method="get">
+    <div class="input-group col-md-8">
+      <input class="form-control form-inline" type="text" name="q" id="q" autofocus="autofocus"/>
+      <span class="input-group-btn">
+        <button class="btn btn-default form-inline">Search</button>
+      </span>
+    </div>
+    <div class="input-group col-md-8">
+      <br>
+      <p>A screenplay search engine.</p>
+    </div>
+  </form>
+</center>

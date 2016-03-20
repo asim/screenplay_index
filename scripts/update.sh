@@ -16,6 +16,10 @@ pid=$!
 
 sleep 5
 
-cat r | while read line; do curl -XPOST -d "$line" http://127.0.0.1:8081/_add; done
+cat r | while read line; do 
+	url=`echo $line | cut -f 1 -d \&`
+	title=`echo $line | cut -f 2 -d \&`
+	curl -XPOST --data-urlencode "$url" -d "$title" http://127.0.0.1:8081/_add
+done
 
 kill $pid

@@ -5,8 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hoisie/mustache"
-	"github.com/mattbaird/elastigo/core"
-	"github.com/mattbaird/elastigo/search"
+	elastigo "github.com/mattbaird/elastigo/lib"
 	"log"
 	"net/http"
 	"net/url"
@@ -52,7 +51,9 @@ func addScript(title, uri string) error {
 		"short": shorten(uri),
 	}
 
-	rsp, err := core.Index(true, "scripts", "script", "", s)
+	conn := elastigo.NewConn()
+
+	rsp, err := conn.Index("scripts", "script", "", s, nil)
 	if err != nil {
 		log.Println("error indexing:", err)
 		return err
@@ -75,9 +76,10 @@ func urlExists(url string) bool {
 		return true
 	}
 
-	qs := search.NewQueryString("url", string(b))
-	q := search.Query().Qs(&qs)
-	out, err := search.Search("scripts").Type("script").Query(q).Size("1").Result()
+	conn := elastigo.NewConn()
+	qs := elastigo.NewQueryString("url", string(b))
+	q := elastigo.Query().Qs(&qs)
+	out, err := elastigo.Search("scripts").Type("script").Query(q).Size("1").Result(conn)
 	if err != nil {
 		log.Println(err)
 		return true
@@ -91,7 +93,8 @@ func urlExists(url string) bool {
 }
 
 func shortExists(id string) bool {
-	out, err := search.Search("scripts").Type("script").Search("short:" + id).Size("1").Result()
+	conn := elastigo.NewConn()
+	out, err := elastigo.Search("scripts").Type("script").Search("short:" + id).Size("1").Result(conn)
 	if err != nil {
 		log.Println(err)
 		return true

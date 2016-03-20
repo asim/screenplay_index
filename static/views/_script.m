@@ -1,10 +1,15 @@
-<div class="link">
+<h3>
   <a href="/url?s={{Short}}&url={{Uri}}">{{Title}}</a>
-  <ul class="share">
-    <li><a href="/s/{{Short}}" onclick="shareLink(this); return false;" style="font-size:0.8em">share</a></li>
-    <li><input type="text" value="foo" style="display: none;"></li>
-  </ul>
+</h3>
+
+<div>{{Domain}}</div>
+
+<p>
+  <small>{{Meta}}</small>
+</p>
+
+<div>
+  <span><a href="/s/{{Short}}" onclick="shareLink(this); return false;" style="font-size:0.8em">share</a></span>
+  <span><input type="text" value="foo" style="display: none;"></span>
 </div>
-<div class="domain">{{Domain}}</div>
-<div class="meta">{{Meta}}</div>
 

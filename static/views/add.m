@@ -1,14 +1,33 @@
-    <div class="center">
-      <h1>Add Script</h1>
-      <form action="/add" method="post">
-	<p>Title</p>
-        <input class="input" type="text" name="title"/>
-	<p>Url (pdf only)</p>
-        <input class="input" type="text" name="url"/>
- 	<p>Captcha</p>
-        <p><img src="/captcha/{{captcha}}.png"/></p>
-       <input type="text" name="captcha"/>
-       <input type="hidden" name="_captchaId" value="{{captcha}}"/>
-        <p><button value="submit">Add</button>
-      </form>
+<center class="center">
+  <h1>Add Script</h1>
+
+  <form action="/add" method="post">
+    <div class="input-group col-md-8">
+      <br>
+      <label>Title</label>
+      <input class="form-control" type="text" name="title"/>
     </div>
+
+    <div class="input-group col-md-8">
+      <br>
+      <label>URL (pdf only)</label>
+      <input class="form-control" type="text" name="url"/>
+    <div>
+
+    <div class="input-group col-md-8">
+      <br>
+      <label>Captcha</label>
+      <p><img src="/captcha/{{captcha}}.png"/></p>
+    </div>
+
+    <div class="input-group col-md-8">
+      <input class="form-control" type="text" name="captcha"/>
+      <input type="hidden" name="_captchaId" value="{{captcha}}"/>
+    </div>
+
+    <div class="form-group">
+      <br>
+      <button class="btn btn-default">Add</button>
+    </div>
+  </form>
+</center>
