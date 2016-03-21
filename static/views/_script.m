@@ -10,7 +10,7 @@
 
 <ul class="list-inline">
   <li>
-    <a href="http://twitter.com/share?text="{{Title}} via @scridx"&amp;url=http://scridx.com/s/{{Short}}"
+    <a href="http://twitter.com/share?text={{Title}}&amp;url=http://scridx.com/s/{{Short}}"
         onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
         <i class="fa fa-twitter"></i>
         <span class="hidden">Twitter</span>
