@@ -44,7 +44,7 @@ func (s script) Uri() string {
 
 func addScript(title, uri string) error {
 	s := map[string]interface{}{
-		"id":    time.Now().Unix(),
+		"id":    float64(time.Now().Unix()),
 		"meta":  "",
 		"title": title,
 		"url":   uri,
@@ -205,7 +205,14 @@ func genTmpl(view string, data ...interface{}) string {
 	return tmpl.RenderInLayout(lyot, data...)
 }
 
-func render(w http.ResponseWriter, data interface{}, view string) {
+func render(w http.ResponseWriter, r *http.Request, data interface{}, view string) {
+	if r.Header.Get("Content-Type") == "application/json" {
+		w.Header().Set("Content-Type", "application/json")
+		b, _ := json.Marshal(data)
+		w.Write(b)
+		return
+	}
+
 	viewPath := filepath.Join("static/views", view+".m")
 	fmt.Fprintf(w, "%s", genTmpl(viewPath, data))
 }

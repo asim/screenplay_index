@@ -65,7 +65,7 @@ func (p *pendingManager) add(s script) error {
 	return nil
 }
 
-func (p *pendingManager) approve(id int64, url string) error {
+func (p *pendingManager) approve(id float64, url string) error {
 	p.mtx.Lock()
 	defer p.mtx.Unlock()
 
@@ -74,7 +74,7 @@ func (p *pendingManager) approve(id int64, url string) error {
 	}
 
 	np := p.pending[url]
-	if id != int64(np.Script.Id) {
+	if id != np.Script.Id {
 		return fmt.Errorf("Id provided %d does not match script id %d", id, np.Script.Id)
 	}
 
@@ -157,7 +157,7 @@ func (p *pendingManager) read() []script {
 	return scripts
 }
 
-func (p *pendingManager) reject(id int64, url string) error {
+func (p *pendingManager) reject(id float64, url string) error {
 	p.mtx.Lock()
 	defer p.mtx.Unlock()
 
@@ -166,7 +166,7 @@ func (p *pendingManager) reject(id int64, url string) error {
 	}
 
 	np := p.pending[url]
-	if id != int64(np.Script.Id) {
+	if id != np.Script.Id {
 		return fmt.Errorf("Id provided %d does not match script id %d", id, np.Script.Id)
 	}
 

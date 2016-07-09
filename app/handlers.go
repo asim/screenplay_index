@@ -59,7 +59,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 			"captcha": captcha.New(),
 		}
 
-		render(w, d, "add")
+		render(w, r, d, "add")
 		return
 	}
 
@@ -79,26 +79,26 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 
 	if title == "" || uri == "" || digits == "" || id == "" {
 		d["alert"] = "Fill in form"
-		render(w, d, "add")
+		render(w, r, d, "add")
 		return
 	}
 
 	if _, err := url.Parse(uri); err != nil || !strings.HasSuffix(uri, ".pdf") {
 		d["alert"] = "Invalid URL (.pdf only)"
-		render(w, d, "add")
+		render(w, r, d, "add")
 		return
 	}
 
 	if t := urlExists(uri); t {
 		log.Println("Exists", uri, t)
 		d["alert"] = "Script already exists"
-		render(w, d, "add")
+		render(w, r, d, "add")
 		return
 	}
 
 	if !captcha.VerifyString(id, digits) {
 		d["alert"] = "Invalid CAPTCHA input"
-		render(w, d, "add")
+		render(w, r, d, "add")
 		return
 	}
 
@@ -112,11 +112,11 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err := defaultPendingManager.add(s); err != nil {
 		d["alert"] = err.Error()
-		render(w, d, "add")
+		render(w, r, d, "add")
 		return
 	}
 
-	render(w, alert("Script will appear in index soon"), "index")
+	render(w, r, alert("Script will appear in index soon"), "index")
 	return
 }
 
@@ -124,10 +124,10 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
 	switch r.URL.Path {
 	case "/", "/index.html", "/index.htm":
-		render(w, nil, "index")
+		render(w, r, nil, "index")
 	default:
 		w.WriteHeader(http.StatusNotFound)
-		render(w, nil, "404")
+		render(w, r, nil, "404")
 	}
 	return
 }
@@ -139,7 +139,7 @@ func latestHandler(w http.ResponseWriter, r *http.Request) {
 	out, err := elastigo.Search("scripts").Type("script").From("0").Size(itemSize).Sort(sort).Result(conn)
 	if err != nil {
 		log.Println("Error:", err)
-		render(w, alert("Problem retrieving scripts"), "scripts")
+		render(w, r, alert("Problem retrieving scripts"), "scripts")
 		return
 	}
 
@@ -159,7 +159,7 @@ func latestHandler(w http.ResponseWriter, r *http.Request) {
 		"results": scripts,
 	}
 
-	render(w, d, "scripts")
+	render(w, r, d, "scripts")
 	return
 }
 
@@ -178,7 +178,7 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 			"results": scripts,
 			"total":   len(scripts),
 		}
-		render(w, results, "pending")
+		render(w, r, results, "pending")
 		return
 	}
 
@@ -187,13 +187,13 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, _ := strconv.ParseInt(r.FormValue("id"), 10, 64)
+	id, _ := strconv.ParseFloat(r.FormValue("id"), 64)
 	url := r.FormValue("url")
 
 	if r.Method == "POST" {
 		if r.FormValue("_method") == "DELETE" {
 			if err := defaultPendingManager.reject(id, url); err != nil {
-				render(w, alert(err.Error()), "pending")
+				render(w, r, alert(err.Error()), "pending")
 				return
 			}
 
@@ -202,7 +202,7 @@ func pendingHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := defaultPendingManager.approve(id, url); err != nil {
-			render(w, alert(err.Error()), "pending")
+			render(w, r, alert(err.Error()), "pending")
 			return
 		}
 
@@ -239,7 +239,7 @@ func randomHandler(w http.ResponseWriter, r *http.Request) {
 	out, err := conn.DoCommand("POST", "/scripts/script/_search", nil, args)
 	if err != nil {
 		log.Println("Error:", err)
-		render(w, alert("Problem retrieving script"), "random")
+		render(w, r, alert("Problem retrieving script"), "random")
 		return
 	}
 
@@ -247,7 +247,7 @@ func randomHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.Unmarshal(out, &retval); err != nil {
 		log.Println("Error:", err)
-		render(w, alert("Problem retrieving script"), "random")
+		render(w, r, alert("Problem retrieving script"), "random")
 		return
 	}
 
@@ -268,7 +268,7 @@ func randomHandler(w http.ResponseWriter, r *http.Request) {
 		"total":   retval.Hits.Total,
 	}
 
-	render(w, d, "random")
+	render(w, r, d, "random")
 	return
 }
 
@@ -285,7 +285,7 @@ func scriptsHandler(w http.ResponseWriter, r *http.Request) {
 	out, err := elastigo.Search("scripts").Type("script").From(from).Size(size).Sort(sort).Result(conn)
 	if err != nil {
 		log.Println("Error:", err)
-		render(w, alert("Problem retrieving scripts"), "scripts")
+		render(w, r, alert("Problem retrieving scripts"), "scripts")
 		return
 	}
 
@@ -311,7 +311,7 @@ func scriptsHandler(w http.ResponseWriter, r *http.Request) {
 		d["pager"] = &pager
 	}
 
-	render(w, d, "scripts")
+	render(w, r, d, "scripts")
 	return
 }
 
@@ -388,7 +388,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		d["pager"] = &pager
 	}
 
-	render(w, d, "search")
+	render(w, r, d, "search")
 	return
 }
 
@@ -405,7 +405,7 @@ func shortHandler(w http.ResponseWriter, r *http.Request) {
 
 	if out.Hits.Len() != 1 {
 		w.WriteHeader(http.StatusNotFound)
-		render(w, nil, "404")
+		render(w, r, nil, "404")
 		return
 	}
 
@@ -432,7 +432,7 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 
 	if len(id) == 0 || len(u) == 0 {
 		w.WriteHeader(http.StatusNotFound)
-		render(w, nil, "404")
+		render(w, r, nil, "404")
 		return
 	}
 
@@ -441,13 +441,13 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("Error:", err)
 		w.WriteHeader(http.StatusNotFound)
-		render(w, nil, "404")
+		render(w, r, nil, "404")
 		return
 	}
 
 	if out.Hits.Len() != 1 {
 		w.WriteHeader(http.StatusNotFound)
-		render(w, nil, "404")
+		render(w, r, nil, "404")
 		return
 	}
 
@@ -461,7 +461,7 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 
 	if su, _ := url.QueryUnescape(s.Url); u != su {
 		w.WriteHeader(http.StatusNotFound)
-		render(w, nil, "404")
+		render(w, r, nil, "404")
 		return
 	}
 
@@ -502,6 +502,6 @@ func trendingHandler(w http.ResponseWriter, r *http.Request) {
 		"results": scripts,
 	}
 
-	render(w, d, "trending")
+	render(w, r, d, "trending")
 	return
 }
