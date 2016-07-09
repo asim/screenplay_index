@@ -74,7 +74,7 @@ func (p *pendingManager) approve(id int64, url string) error {
 	}
 
 	np := p.pending[url]
-	if id != np.Script.Id {
+	if id != int64(np.Script.Id) {
 		return fmt.Errorf("Id provided %d does not match script id %d", id, np.Script.Id)
 	}
 
@@ -166,7 +166,7 @@ func (p *pendingManager) reject(id int64, url string) error {
 	}
 
 	np := p.pending[url]
-	if id != np.Script.Id {
+	if id != int64(np.Script.Id) {
 		return fmt.Errorf("Id provided %d does not match script id %d", id, np.Script.Id)
 	}
 

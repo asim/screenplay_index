@@ -21,7 +21,7 @@ var (
 )
 
 type script struct {
-	Id                      int64
+	Id                      float64
 	Meta, Title, Url, Short string
 }
 
