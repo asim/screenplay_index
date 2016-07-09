@@ -53,7 +53,7 @@ func addScript(title, uri string) error {
 
 	conn := elastigo.NewConn()
 
-	rsp, err := conn.Index("scripts", "script", "", s, nil)
+	rsp, err := conn.Index("scripts", "script", "", nil, s)
 	if err != nil {
 		log.Println("error indexing:", err)
 		return err
