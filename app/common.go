@@ -52,6 +52,7 @@ func addScript(title, uri string) error {
 	}
 
 	conn := elastigo.NewConn()
+	defer conn.Close()
 
 	rsp, err := conn.Index("scripts", "script", "", nil, s)
 	if err != nil {
@@ -77,6 +78,7 @@ func urlExists(url string) bool {
 	}
 
 	conn := elastigo.NewConn()
+	defer conn.Close()
 	qs := elastigo.NewQueryString("url", string(b))
 	q := elastigo.Query().Qs(&qs)
 	out, err := elastigo.Search("scripts").Type("script").Query(q).Size("1").Result(conn)
@@ -94,6 +96,7 @@ func urlExists(url string) bool {
 
 func shortExists(id string) bool {
 	conn := elastigo.NewConn()
+	defer conn.Close()
 	out, err := elastigo.Search("scripts").Type("script").Search("short:" + id).Size("1").Result(conn)
 	if err != nil {
 		log.Println(err)

@@ -135,6 +135,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func latestHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
 	conn := elastigo.NewConn()
+	defer conn.Close()
 	sort := elastigo.Sort("id").Desc()
 	out, err := elastigo.Search("scripts").Type("script").From("0").Size(itemSize).Sort(sort).Result(conn)
 	if err != nil {
@@ -235,6 +236,7 @@ func randomHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	conn := elastigo.NewConn()
+	defer conn.Close()
 
 	out, err := conn.DoCommand("POST", "/scripts/script/_search", nil, args)
 	if err != nil {
@@ -281,6 +283,7 @@ func scriptsHandler(w http.ResponseWriter, r *http.Request) {
 	page, offset := getPageOffset(vars, limit)
 	from := fmt.Sprintf("%d", offset)
 	conn := elastigo.NewConn()
+	defer conn.Close()
 	sort := elastigo.Sort("id").Desc()
 	out, err := elastigo.Search("scripts").Type("script").From(from).Size(size).Sort(sort).Result(conn)
 	if err != nil {
@@ -358,6 +361,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	qe := elastigo.Query().Qs(&qs)
 	conn := elastigo.NewConn()
+	defer conn.Close()
 	out, err := elastigo.Search("scripts").Type("script").Query(qe).From(from).Size(size).Result(conn)
 	if err != nil {
 		log.Println("Error:", err)
@@ -395,6 +399,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 func shortHandler(w http.ResponseWriter, r *http.Request) {
 	Logger(w, r)
 	conn := elastigo.NewConn()
+	defer conn.Close()
 	id := strings.TrimPrefix(r.RequestURI, "/s/")
 	out, err := elastigo.Search("scripts").Type("script").Search("short:" + id).Size("1").Result(conn)
 	if err != nil {
@@ -437,6 +442,7 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	conn := elastigo.NewConn()
+	defer conn.Close()
 	out, err := elastigo.Search("scripts").Type("script").Search("short:" + id).Size("1").Result(conn)
 	if err != nil {
 		log.Println("Error:", err)
@@ -480,6 +486,7 @@ func trendingHandler(w http.ResponseWriter, r *http.Request) {
 	var scripts []script
 
 	conn := elastigo.NewConn()
+	defer conn.Close()
 
 	if len(trending) < numRanked/2 {
 		sort := elastigo.Sort("short").Desc()
