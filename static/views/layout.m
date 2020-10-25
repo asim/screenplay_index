@@ -43,7 +43,7 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="t-ico"><a href="https://twitter.com/scridx"><img src="/static/image/t.png"/></a></li>
+            <li class="t-ico"><a href="https://twitter.com/screenplays"><img src="/static/image/t.png"/></a></li>
           </ul>
         </div><!--/.nav-collapse -->
 
@@ -91,7 +91,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-41003159-1', 'scridx.com');
+      ga('create', 'UA-41003159-1', 'screenplays.com');
       ga('send', 'pageview');
     </script>
   </body>

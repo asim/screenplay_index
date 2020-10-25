@@ -1,6 +1,6 @@
 #!/bin/bash
 
-work=/home/asim/c/src/github.com/asim/screenplay_index
+work=/home/asim/c/src/github.com/asim/screenplays
 
 cd $work
 
@@ -10,7 +10,7 @@ for j in scripts/joblo.sh scripts/august.sh scripts/awesome.sh scripts/bbc.sh sc
 
 cat u | bash scripts/validator.sh | sort | uniq > r
 
-./screenplay_index &
+./screenplays &
 
 pid=$!
 

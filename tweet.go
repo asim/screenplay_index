@@ -63,7 +63,7 @@ func tweet(uri, msg string) {
 	}
 
 	for i := 0; i < len(scripts); i++ {
-		script := fmt.Sprintf("http://scridx.com/s/%s", scripts[i].Short)
+		script := fmt.Sprintf("http://screenplays.com/s/%s", scripts[i].Short)
 		title := scripts[i].Title
 		tweetr:= fmt.Sprintf(msg, title, script)
 		if seen[tweetr] {
@@ -91,11 +91,11 @@ func main() {
 		case <-clear.C:
 			seen = make(map[string]bool)
 		case <-latest.C:
-			tweet("http://scridx.com/scripts", `Latest on #scridx: "%s". Read the script %s #screenwriting`)
+			tweet("http://screenplays.com/scripts", `Latest on #screenplays: "%s". Read the script %s #screenwriting`)
 		case <-random.C:
-			tweet("http://scridx.com/random", `Random reading on #scridx: "%s". Read the script %s #screenwriting`)
+			tweet("http://screenplays.com/random", `Random reading on #screenplays: "%s". Read the script %s #screenwriting`)
 		case <-trending.C:
-			tweet("http://scridx.com/trending", `Trending on #scridx: "%s". Read the script %s #screenwriting`)
+			tweet("http://screenplays.com/trending", `Trending on #screenplays: "%s". Read the script %s #screenwriting`)
 		}
 	}
 }

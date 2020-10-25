@@ -2,7 +2,7 @@ package app
 
 import (
 	"encoding/json"
-	"github.com/asim/screenplay_index/rankings"
+	"github.com/asim/screenplays/rankings"
 	"io/ioutil"
 	"log"
 	"os"
